@@ -10,7 +10,7 @@ import VendorInputHeader from "./vendorPage/VendorInputHeader"
 import InsertProduct from "./vendorPage/InsertProduct";
 import ShoppingCart from "./customerPage/ShoppingCart";
 import Test from "./customerPage/Test";
-import GridUiCopy from "./customerPage/GridUiCopy";
+
 
 
 import axios from "axios";

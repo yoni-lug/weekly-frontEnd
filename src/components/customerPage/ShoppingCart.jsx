@@ -43,14 +43,14 @@
      const orders=props.shoppingCart
   
    
-      // console.log("this is the shopping Cart")
-      // console.log(props.shoppingCart)
+      console.log("this is the shopping Cart")
+      console.log(props.shoppingCart)
       const classes = useStyles();
       
       function handelRemoveClick (id,event){
         
         return (
-        props.removeOrder(id)
+          props.removeOrder(id)
         )
       }
 
@@ -58,7 +58,8 @@
         // console.log("contineShopping")
         return props.continueShopping.whatToShow();
         }
-      return (
+      
+        return (
         <div className={classes.root}>
          {/* BUTTOMS PART */}
          <div className={classes.buttomDiv }>
@@ -86,7 +87,7 @@
           
             <CardMedia
               className={classes.media}
-              image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
+              image="https://applemagazine.com/wp-content/uploads/2021/09/146898-phones-feature-the-best-apple-iphone-photos-ever-taken-image1-ydter7skel.jpg"
               title="Contemplative Reptile"
             />
          </Grid>

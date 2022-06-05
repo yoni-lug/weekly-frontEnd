@@ -82,79 +82,79 @@ function ProductsGridUi(props){
                         // name={product}
                        
                         >
-                      <CardMedia
-                        id={product._id}
-                        className={classes.cardMedia}
-                            image={product.productImage}
-                    
-                           // image="https://source.unsplash.com/random"
-                            title="Image title"
-                      />
-                      <CardContent className={classes.cardContent}>
-                        <Typography 
+                        <CardMedia
                           id={product._id}
-                          className = {classes.typography} 
-                          gutterBottom 
-                          variant="h5" 
-                          component="h2"
-                          >
-                          {product.productHeader}
-                        </Typography>
-                        <Typography id={product._id}>
-                          {product.productDescription}
-                        </Typography>
-                        
-                      </CardContent>
-                      <CardContent>
-                        <Typography id={product._id}>
-                        מחיר: {product.price}    
-                        </Typography>
-                        <Typography id={product._id}>
-                          עבור: {product.units}  
-                        </Typography> 
-                      </CardContent>
+                          className={classes.cardMedia}
+                              image={product.productImage}
                       
-                      <CardContent>
-                          <TextField
-                              id={product._id}
-                              variant="outlined"
-                              label="כמות"
-                              onChange={handleQntChange}
-                              select
-                            //   value="2"
-                                SelectProps={{
-                                  native: true,
-                                }}
-                                >
-                                {quantities.map((option) => (
-                                  <option key={option} value={option}>
-                                    {option}
-                                  </option>
-                              ))}
-                            </TextField>
-                            <Button 
-                                id={product._id}
-                                type="submit"
-                                className={classes.purchaseButton} 
-                                 size="large" variant="contained"
-                                color="primary"
-                                
-                                >הוסף לסל קניות     
-                            </Button>
+                            // image="https://source.unsplash.com/random"
+                              title="Image title"
+                        />
+                        <CardContent className={classes.cardContent}>
+                          <Typography 
+                            id={product._id}
+                            className = {classes.typography} 
+                            gutterBottom 
+                            variant="h5" 
+                            component="h2"
+                            >
+                            {product.productHeader}
+                          </Typography>
+                          <Typography id={product._id}>
+                            {product.productDescription}
+                          </Typography>
+                          
                         </CardContent>
-                      <CardActions>  
-                        <Typography style={{position: "relative"}} id={product._id}
-                          > {product.vendor} 
-                        </Typography>
-          
-                        <Button
-                            id={product._id} 
-                            style={{marginRight:"150px"}} 
-                            size="small" 
-                            color="primary">
-                          פרטים נוספים
-                        </Button>
-                      </CardActions>
+                        <CardContent>
+                          <Typography id={product._id}>
+                          מחיר: {product.price}    
+                          </Typography>
+                          <Typography id={product._id}>
+                            עבור: {product.units}  
+                          </Typography> 
+                        </CardContent>
+                        
+                        <CardContent>
+                            <TextField
+                                id={product._id}
+                                variant="outlined"
+                                label="כמות"
+                                onChange={handleQntChange}
+                                select
+                              //   value="2"
+                                  SelectProps={{
+                                    native: true,
+                                  }}
+                                  >
+                                  {quantities.map((option) => (
+                                    <option key={option} value={option}>
+                                      {option}
+                                    </option>
+                                ))}
+                              </TextField>
+                              <Button 
+                                  id={product._id}
+                                  type="submit"
+                                  className={classes.purchaseButton} 
+                                  size="large" variant="contained"
+                                  color="primary"
+                                  
+                                  >הוסף לסל קניות     
+                              </Button>
+                          </CardContent>
+                        <CardActions>  
+                          <Typography style={{position: "relative"}} id={product._id}
+                            > {product.vendor} 
+                          </Typography>
+            
+                          <Button
+                              id={product._id} 
+                              style={{marginRight:"150px"}} 
+                              size="small" 
+                              color="primary">
+                            פרטים נוספים
+                          </Button>
+                        </CardActions>
                       </form>
                     </Card>
                     

@@ -56,7 +56,7 @@ export default function BasicTable() {
   // HOOKS FOR the data from the Data Base
   const [rows, setRows] = useState ([]); 
 
-  //functions read the data from the data base
+  //functions read the data from the data base when render
 useEffect( function(){
     axios.get('/findVendorProducts')
     .then(
@@ -80,28 +80,30 @@ useEffect( function(){
 
   
 
-  // //HOOKS FOR THE THE Effect
-  useEffect (function() {
-    console.log("is change  "+isChecked )
-    console.log(isChecked)
-  },[isChecked])
+  // // //HOOKS FOR THE THE Effect
+  // useEffect (function() {
+  //   console.log("is change  "+isChecked )
+  //   console.log(isChecked)
+  // },[isChecked])
   
  
   //HANDLE THE ADD BUTTON - TO render the add item page
     function handleClickAddIcon(){
       console.log("clicked +, using link to render the next page")
    } 
-  //HANDLE THE CHECK BOX CLICK
+  
+  
+   //HANDLE THE CHECK BOX CLICK
 
-  function handleCheckboxChange(event,rowId){
-    console.log("click the checkb box")
-    setIsChecked (function(previous){
-      return (
-        [...previous, {id:rowId, check:event.target.checked}]
-      )
-    });
-    console.log (isChecked)
-  };
+  // function handleCheckboxChange(event,rowId){
+  //   console.log("click the checkb box")
+  //   setIsChecked (function(previous){
+  //     return (
+  //       [...previous, {id:rowId, check:event.target.checked}]
+  //     )
+  //   });
+  //   console.log (isChecked)
+  // };
   
   //HANDLE THE DELETE ICON
   function handleDeleteIconClick (event, rowId){
@@ -157,22 +159,22 @@ useEffect( function(){
   return (
 
       <div>
-      <Button
+      {/* <Button
         variant="contained"
         color="secondary"
         className={classes.button}
         startIcon={<DeleteIcon />}
-      >  Delete </Button>
+      >  Delete </Button> */}
      
     
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead className={classes.head}>
           <TableRow  >
-          <Checkbox
+          {/* <Checkbox
             color="primary"
             inputProps={{ 'aria-label': 'checkbox headline -All rows' }}
-          />
+          /> */}
             <TableCell align="right">מוצר</TableCell>
             <TableCell align="right">תיאור המוצר</TableCell>
             <TableCell align="right">יחידות/ משקל</TableCell>
@@ -189,7 +191,7 @@ useEffect( function(){
             
             <TableRow key={row._id}>
 
-            <Checkbox
+            {/* <Checkbox
               color="primary"
              
               className= {classes.editIcon}
@@ -198,10 +200,8 @@ useEffect( function(){
                 return(
                   handleCheckboxChange(event,row._id)
                 )
-              }}
-              
-              // id={row._id}
-            />
+              }} 
+            /> */}
 
               <TableCell align="right" component="th" scope="row" >
                 {row.productHeader}

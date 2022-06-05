@@ -1,3 +1,5 @@
+//NEED TO CHECK THE ASYNC EFFECT 
+
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -11,6 +13,8 @@ import UploadImage from "./UploadImage"
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
+import { v4 as uuidv4 } from 'uuid';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,37 +22,56 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     margin: theme.spacing(1),
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
+  // paper: {
+  //   // padding: theme.spacing(2),
+  //   // textAlign: 'center',
+  //   // color: theme.palette.text.secondary,
+  // },
     
 }}));
 
 export default function InsertProduct() {
   const classes = useStyles();
 
+  
   const history = useHistory();
   const routeChange = () =>{ 
     let path = `/vendorProductList`; 
     history.push(path);
   }
-
-  const [newProduct, setNewProduct]= useState ({
+  
+  // const newProductObject = {
+  //   productHeader:"",
+  //   productDescription:"",
+  //   productCost:"",
+  //   productPackage:"",
+  //   deliveryArea:"",
+  //   productID:""
+// }
+  
+    
+    const [newProduct, setNewProduct]= useState ({
     productHeader:"",
     productDescription:"",
     productCost:"",
     productPackage:"",
-    deliveryArea:""
+    deliveryArea:"",
+    productID:""
+    })
 
-  })
 
   const [image,setImage] =useState ({
     state: false,
     preview: "", 
     raw: ""
   });
+
+  // TO UPLOAD THE IMAGE
+  const [imageLoad, setImageLoad] =useState ({
+    name: "",
+    file: "",
+    path:{}
+  })
 
   function imagePreview (imageData){
     console.log("it is work");
@@ -58,14 +81,16 @@ export default function InsertProduct() {
         preview: URL.createObjectURL(imageData),
         raw: imageData
     });
-
-    
-
   }
 
   function handleChange (event){
     const value=event.target.value
     const name=event.target.name
+    // newProductObject.[name] = value
+    console.log ("chnage")
+    // console.log (newProductObject.productHeader)
+    // console.log (newProductObject)
+  
     setNewProduct ({
       ...newProduct, 
       [name]: value
@@ -83,27 +108,150 @@ export default function InsertProduct() {
     })
   }
 
+// PRIGINAL----------------------------------------------
+  // function handleSubmit (event){
+  //   event.preventDefault()
+  //   axios.post('/newProduct',newProduct)
+  //     .then(function (response) {
+  //     // handle success
+  //     console.log(response.data);
+  //     })
+  //     .catch(function (error) {
+  //    // handle error
+  //     console.log(error);
+  //     })
+
+  //   console.log (event.target)
+
+  //   routeChange(); // USING THE USE HISTORY TO ROUTE CHANGE
+  // }
+//-------------------------------------------------------------
   function handleSubmit (event){
     event.preventDefault()
-    axios.post('/newProduct',newProduct)
+    
+    //CREATE PRODUCT_ID
+    
+    const productID = uuidv4(); 
+    console.log(productID);
+    //ADD PRODUCT ID TO THE NEW PRODUCT
+    newProduct.productID = productID
+    console.log ("NEW PRODUCT WITH PRODUCT ID")
+    console.log (newProduct)
+    
+    
+    //fUNCTIO TO SEND THR TEXT DATA TO THE SERVER
+    async function sendTextData (){
+      try {
+        const response = await axios.post('/newProduct', newProduct);
+        // handle success
+        console.log(response.data);
+      } catch (error) {
+        // handle error
+        console.log(error);
+      }
+    } 
+    // function sendTextData (){
+    //   return axios.post('/newProduct',newProduct)
+    //   .then(function (response) {
+    //   // handle success
+    //   console.log(response.data);
+    //   })
+    //   .catch(function (error) {
+    //   // handle error
+    //   console.log(error);
+    //   })
+    // } 
+    
+    //FUNCTION TO SEND THE IMAGE FILE TO THE SERVER
+     console.log ("imageLoad.name = " +imageLoad.name)
+     console.log (imageLoad.file)
+    const formData = new FormData();
+    formData.append (imageLoad.name , imageLoad.file, productID )
+   
+   
+    //SEND TEXTDATA TO SERVER AND THEN SEND THE IMAGE DATA TO SEVER SYNC
+    
+    sendTextData() //SEND THE DATA TO DATA BASE
+    .then((response)=>{   //sync sending the data and sending the image
+      console.log("response")
+      return (
+      // SEND THE IMAGE TO DATA BASE
+        axios.post('/productImage',formData)
+          .then(function (response) {
+          // handle success
+          console.log("respone data")
+          console.log(response.data);
+          })
+        )
+      
+    })
+    //sendTextData().then (sendImageToServer())
+    //console.log (event.target)
+    
+    console.log ("!!!!!ATFTER THE IMAGE ")
+   
+   
+   
+   
+   
+    
+      
+    routeChange(); // USING THE USE HISTORY TO ROUTE CHANGE
+   }
+//-----------------------------------------------------------------
+
+  function handleInputChange (event) {
+  
+    const name=event.target.name
+    console.log (name)
+    const imageFile = event.target.files[0]
+    console.log (imageFile)
+    setImageLoad ({
+      name: name,
+      file: imageFile,
+      path:{}
+    })   
+  }
+
+  function handleImageSubmit (event){
+    event.preventDefault()    
+    console.log (event.target)
+    console.log (imageLoad.name)
+    console.log (imageLoad.file)
+
+    const formData = new FormData();
+    formData.append (imageLoad.name , imageLoad.file)
+
+    axios.post('/productImage',formData)
       .then(function (response) {
       // handle success
+      console.log("respone data")
       console.log(response.data);
+      const serverPath = response.data;
+      console.log (serverPath.fullPathLocationLocalServer+".jpg")
+      
+      setImageLoad (function (preValue){
+        return({
+          name: preValue.name,
+          file: preValue.file,
+          path: serverPath
+        })
       })
-      .catch(function (error) {
-     // handle error
-      console.log(error);
+
+      // axios.get('/productImage', {
+      //   params: {
+      //     path: serverPath,
+      //     myName:"yehonatan"
+      //   }
+      // })
+      // .then(function (response) {
+      //   console.log ("this is the response")
+      //   console.log(response);
+      // })
+      // .catch(function (error) {
+      //   console.log(error);
+      // })
       })
-
-    console.log (event.target)
-
-    routeChange(); // USING THE USE HISTORY TO ROUTE CHANGE
-
-    
-    
-    
-  
-    
   }
 
   return (
@@ -158,23 +306,30 @@ export default function InsertProduct() {
                 value={newProduct.productPackage}
             />
               <CheckBoxZones delivery={placesToDeliver} />
-              <UploadImage style={{margin:"100px"}} imageData={imagePreview}/>
-
-              {/* <h1>{newProduct.productHeader}</h1>
-              <h1>{newProduct.productDescription}</h1>
-              <h1>{newProduct.productCost}</h1>
-              <h1>{newProduct.productPackage}</h1> */}
-              
+               
               <Button 
                 type="submit"
                  size= "large" 
                  variant="contained" 
-                 color="primary"> Primary
+                 color="primary"> אישור
               </Button>
             </form>
-
             
             
+            <form 
+               // action="/productImage" enctype="multipart/form-data" method="post"
+                onSubmit={handleImageSubmit}
+                >
+                  <div >
+                    <input type="file" accept= "image/*" name="file" onChange ={handleInputChange} />
+                   {/* <input type="text"  placeholder="Number of speakers" name="nspeakers"/> */}
+                    <input type="submit" value="Get me the stats!" />            
+                  </div>
+              </form>
+          
+              
+              <UploadImage style={{margin:"100px"}} imageData={imagePreview}/>           
+             
 
         </Grid>
         <Grid item xs={4}>
