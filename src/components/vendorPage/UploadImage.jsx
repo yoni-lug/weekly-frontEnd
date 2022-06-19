@@ -53,8 +53,8 @@ function UploadImage(props) {
         onChange={handleChange}
       />
       <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
-          העלה תמונה
+        <Button variant="contained"  color="primary" component="span">
+          הצג תמונה
         </Button>
       </label>
     </div> 

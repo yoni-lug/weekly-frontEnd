@@ -86,11 +86,7 @@ export default function InsertProduct() {
   function handleChange (event){
     const value=event.target.value
     const name=event.target.name
-    // newProductObject.[name] = value
-    console.log ("chnage")
-    // console.log (newProductObject.productHeader)
-    // console.log (newProductObject)
-  
+ 
     setNewProduct ({
       ...newProduct, 
       [name]: value
@@ -100,8 +96,6 @@ export default function InsertProduct() {
     console.log ("the function is working")
     console.log (delivery)
     let name="deliveryArea"
-  // console.log ("place edliver")
-  //   console.log (newProduct)
     setNewProduct ({
       ...newProduct,
       [name]:delivery
@@ -131,8 +125,8 @@ export default function InsertProduct() {
     
     //CREATE PRODUCT_ID
     
-    const productID = uuidv4(); 
-    console.log(productID);
+    const productID = uuidv4(); // CREATE UNIQE IDENTFIER
+    console.log("product ID = " +productID);
     //ADD PRODUCT ID TO THE NEW PRODUCT
     newProduct.productID = productID
     console.log ("NEW PRODUCT WITH PRODUCT ID")
@@ -145,22 +139,13 @@ export default function InsertProduct() {
         const response = await axios.post('/newProduct', newProduct);
         // handle success
         console.log(response.data);
+        routeChange(); // USING THE USE HISTORY TO ROUTE CHANGE
       } catch (error) {
         // handle error
         console.log(error);
       }
     } 
-    // function sendTextData (){
-    //   return axios.post('/newProduct',newProduct)
-    //   .then(function (response) {
-    //   // handle success
-    //   console.log(response.data);
-    //   })
-    //   .catch(function (error) {
-    //   // handle error
-    //   console.log(error);
-    //   })
-    // } 
+
     
     //FUNCTION TO SEND THE IMAGE FILE TO THE SERVER
      console.log ("imageLoad.name = " +imageLoad.name)
@@ -213,6 +198,7 @@ export default function InsertProduct() {
     })   
   }
 
+    // TODO 1
   function handleImageSubmit (event){
     event.preventDefault()    
     console.log (event.target)
@@ -221,7 +207,7 @@ export default function InsertProduct() {
 
     const formData = new FormData();
     formData.append (imageLoad.name , imageLoad.file)
-
+    
     axios.post('/productImage',formData)
       .then(function (response) {
       // handle success
@@ -230,7 +216,10 @@ export default function InsertProduct() {
       const serverPath = response.data;
       console.log (serverPath.fullPathLocationLocalServer+".jpg")
       
-      setImageLoad (function (preValue){
+//TODO2 END
+
+//TODO 3 
+  setImageLoad (function (preValue){
         return({
           name: preValue.name,
           file: preValue.file,
@@ -238,19 +227,7 @@ export default function InsertProduct() {
         })
       })
 
-      // axios.get('/productImage', {
-      //   params: {
-      //     path: serverPath,
-      //     myName:"yehonatan"
-      //   }
-      // })
-      // .then(function (response) {
-      //   console.log ("this is the response")
-      //   console.log(response);
-      // })
-      // .catch(function (error) {
-      //   console.log(error);
-      // })
+     
       })
   }
 
@@ -322,20 +299,21 @@ export default function InsertProduct() {
                 >
                   <div >
                     <input type="file" accept= "image/*" name="file" onChange ={handleInputChange} />
-                   {/* <input type="text"  placeholder="Number of speakers" name="nspeakers"/> */}
-                    <input type="submit" value="Get me the stats!" />            
+                  
+                    <input type="submit" value="Handel image submit!" />            
                   </div>
               </form>
           
               
-              <UploadImage style={{margin:"100px"}} imageData={imagePreview}/>           
+              <UploadImage style= {{margin:"100px"}} imageData={imagePreview}/>  
+              {/* TODO THE STYLE NOT WORK           */}
              
 
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper}>preview</Paper>
           {/* <img src={image.preview} alt="dummy" width="300" height="300" /> */}
-          {image.state && <img height = "300"src={image.preview}></img>}
+          {image.state && <img height = "300" src={image.preview}></img>}
         </Grid>
       </Grid>
     </div>
